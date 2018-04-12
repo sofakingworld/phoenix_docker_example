@@ -1,0 +1,16 @@
+version: '2'
+services:
+  postgres:
+    image: circleci/postgres
+    container_name: postgres_for_phoenix
+    ports:
+      - "5432:5432"
+
+  application:
+    build: ./
+    links:
+      - "postgres"
+    container_name: phoenix_application
+    ports:
+      - "4000:4000"
+    command: bash -c "mix test && mix ecto.reset && mix phx.server"
